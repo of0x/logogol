@@ -1,0 +1,176 @@
+swagger: '2.0'
+info:
+  version: 0.1.0
+  title: The server for a link manager 
+  description: A application to manage links.
+host: 'localhost:7749'
+basePath: /logogol
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /link:
+    get:
+      description: Get the list of all links
+      summary: Get the list of all links
+      tags:
+        - link
+      operationId: linkGet
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: List of all links
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Link'
+        default:
+          description: Generic error response
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      description: Create a new link
+      summary: Create a new link
+      tags:
+        - link
+      operationId: LinkPost
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: false
+          description: ''
+          schema:
+            $ref: '#/definitions/Link'
+      responses:
+        '200':
+          description: The created link
+          schema:
+            $ref: '#/definitions/Link'
+        default:
+          description: Generic error response
+          schema:
+            $ref: '#/definitions/Error'
+  '/link/{linkId}':
+    get:
+      description: Get a single link based on its id
+      summary: Get a single link based on its id
+      tags:
+        - link
+      operationId: LinkGetById
+      produces:
+        - application/json
+      parameters:
+        - name: linkId
+          in: path
+          required: true
+          type: string
+          description: The id of the link
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/Link'
+        default:
+          description: Generic error response
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      description: Update an existing link
+      summary: Update an existing link
+      tags:
+        - link
+      operationId: LinkUpdate
+      produces:
+        - application/json
+      parameters:
+        - name: linkId
+          in: path
+          required: true
+          type: string
+          description: The id of the link
+        - name: body
+          in: body
+          required: false
+          description: ''
+          schema:
+            $ref: '#/definitions/Link'
+      responses:
+        '200':
+          description: The updated link
+          schema:
+            $ref: '#/definitions/Link'
+        default:
+          description: Generic error response
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      description: Delete an existing link
+      summary: Delete an existing link
+      tags:
+        - link
+      operationId: LinkDelete
+      produces:
+        - application/json
+      parameters:
+        - name: linkId
+          in: path
+          required: true
+          type: string
+          description: The id of the link
+      responses:
+        '204':
+          description: Link deleted response
+        default:
+          description: Generic error response
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Link:
+    title: Link
+    description: Object representing a Link
+    type: object
+    properties:
+      url:
+        description: the url for a link
+        example: https://www.theatlantic.com/magazine/archive/1945/07/as-we-may-think/303881/
+        type: string
+      description:
+        description: description of the link
+        example: My important link
+        type: string
+      id:
+        description: a uuid for the link
+        example: 6423003a-8c0e-4ff0-8993-3a07d92b428d
+        type: string
+      paths:
+        description: a list of related links
+        example: [53a78510-7ebc-47ce-8bf4-bc4928483d56, b5a22697-d2f9-4bb0-b5d8-7cbd93a3abae]
+        type: array
+      tags:
+        description: search terms related to the link
+        example: [memex, vanavar, bush, trails, augmentation]
+        type: string
+    required:
+      - url
+        id
+  Error:
+    title: Error
+    description: Object representing an error
+    type: object
+    properties:
+      code:
+        description: Error code that identifies the error
+        example: -1
+        type: integer
+        format: int32
+      message:
+        description: Short description of the error
+        example: Delete failed
+        type: string
