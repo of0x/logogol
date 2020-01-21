@@ -1,0 +1,8 @@
+__pycache__/
+
+bin/
+
+settings.json
+
+# debug database
+debug.db
